@@ -49,9 +49,6 @@ public class JSONParser {
         JSONObject cloudObject = getObject("clouds", jsonObject);
         weather.clouds.setPercentage(getInt("all", cloudObject));
 
-
-        //ToDo: download icon
-
         return weather;
     }
 

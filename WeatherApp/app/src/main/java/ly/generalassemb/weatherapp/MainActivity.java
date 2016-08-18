@@ -3,7 +3,6 @@ package ly.generalassemb.weatherapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -27,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private EditText input;
-    private Image image;
     private String zip;
     private String city;
     private WeatherAdapter adapter;
@@ -49,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         starterCities[1] = "70611";
         starterCities[2] = "75204";
 
-        //city = "78704";
-
         mRecyclerView = (RecyclerView) findViewById(R.id.weather_recycler);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -62,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             adapter = new WeatherAdapter(zipList, weatherList, MainActivity.this);
             mRecyclerView.setAdapter(adapter);
         }
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,10 +80,7 @@ public class MainActivity extends AppCompatActivity {
                             // Query database
                             JSONWeatherTask task = new JSONWeatherTask();
                             task.execute(new String[]{zip});
-//
-//                            int position = getAdapterPosition();
-//                            Weather weather = weatherList.get(position);
-//                            String zipText = zipList.get(position);
+
                             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                             intent.putExtra("zip", zip);
                             startActivity(intent);
@@ -117,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 weather = JSONParser.getWeather(data);
-                //weather.iconData = ((new HTTPClient()).getImage(weather.currentWeather.getIcon()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -132,9 +123,6 @@ public class MainActivity extends AppCompatActivity {
             adapter = new WeatherAdapter(zipList, weatherList, context);
             mRecyclerView.setAdapter(adapter);
 
-//            if(weather.iconData != null && weather.iconData.length > 0) {
-//                Bitmap img = BitmapFactory.decodeByteArray(weather.iconData, 0, weather.iconData.length);
-//            }
         }
     }
 
