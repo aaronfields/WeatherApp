@@ -63,12 +63,12 @@ public class DetailActivity extends AppCompatActivity {
             super.onPostExecute(weather);
 
             city.setText(weather.location.getCity());
-            temp.setText(Double.toString(weather.temperature.getTemp()));
+            temp.setText(Double.toString(weather.temperature.getTemp())+"°F");
             description.setText(weather.currentWeather.getDescription());
-            humidity.setText(weather.currentWeather.getHumidity());
-            pressure.setText(weather.currentWeather.getPressure());
-            windSpeed.setText(Double.toString(weather.wind.getSpeed()));
-            windDegree.setText(Double.toString(weather.wind.getDegrees()));
+            humidity.setText("Humidity: "+weather.currentWeather.getHumidity()+"%");
+            pressure.setText("Pressure: "+weather.currentWeather.getPressure()+" mb");
+            windSpeed.setText("Wind Speed: "+Double.toString(weather.wind.getSpeed())+" mph");
+            windDegree.setText("Wind Direction: "+Double.toString(weather.wind.getDegrees())+"°");
 
         }
     }

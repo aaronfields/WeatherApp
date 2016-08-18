@@ -52,7 +52,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
         holder.city.setText(weather.location.getCity());
         holder.zip.setText(zipList.get(position));
         holder.description.setText(weather.currentWeather.getDescription());
-        holder.temp.setText(Double.toString(weather.temperature.getTemp()));
+        holder.temp.setText(Double.toString(weather.temperature.getTemp())+"°F");
         //holder.temp.setText(weather.temperature.getTemp());
 
     }
