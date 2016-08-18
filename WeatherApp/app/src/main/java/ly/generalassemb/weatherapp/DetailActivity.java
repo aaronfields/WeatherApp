@@ -24,6 +24,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        // Get zip that was clicked from MainActivity
         Intent intent = getIntent();
         zip = intent.getStringExtra("zip");
 
@@ -35,6 +36,7 @@ public class DetailActivity extends AppCompatActivity {
         windSpeed = (TextView) findViewById(R.id.windSpeed);
         windDegree = (TextView) findViewById(R.id.windDegree);
 
+        // Query API with zip passed with Intent
         JSONWeatherTask task = new JSONWeatherTask();
         task.execute(new String[] {zip});
 
@@ -43,7 +45,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
 
-
+        // Do in background thread
         @Override
         protected Weather doInBackground(String... params) {
             Weather weather = new Weather();
@@ -58,6 +60,7 @@ public class DetailActivity extends AppCompatActivity {
             return weather;
         }
 
+        // Post results on UI thread
         @Override
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);

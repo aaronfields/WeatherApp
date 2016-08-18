@@ -16,6 +16,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -45,12 +46,13 @@ public class MainActivity extends AppCompatActivity {
         starterCities = new String[3];
         starterCities[0] = "78704";
         starterCities[1] = "70611";
-        starterCities[2] = "75204";
+        starterCities[2] = "10002";
 
         mRecyclerView = (RecyclerView) findViewById(R.id.weather_recycler);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        // Iterate through cities we want our app pre-populated with
         for(String city : starterCities) {
             zipList.add(city);
             JSONWeatherTask task = new JSONWeatherTask();
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setAdapter(adapter);
         }
 
+        // Create fab as means to add more zip codes
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +78,14 @@ public class MainActivity extends AppCompatActivity {
                         zip = input.getText().toString();
                         if(zip.length() != 5){
                             input.setError("Not a valid input");
+                            Toast.makeText(MainActivity.this, "Not a valid zip code", Toast.LENGTH_SHORT).show();
                         } else {
                             zipList.add(zip);
-                            // Query database
+                            // Query API with zip the user put in
                             JSONWeatherTask task = new JSONWeatherTask();
                             task.execute(new String[]{zip});
 
+                            // View detail page of new zip
                             Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                             intent.putExtra("zip", zip);
                             startActivity(intent);
@@ -98,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+        // Use AsyncTask to get JSON data on background thread
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
 
         @Override
@@ -114,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return weather;
         }
-
+        // Once data has been received, use onPostExecute to publish results on UI thread
         @Override
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
@@ -125,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
+    // Make sure we're connected to the internet
     public void checkConnection(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

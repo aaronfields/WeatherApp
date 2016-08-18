@@ -12,8 +12,10 @@ public class JSONParser {
     public static Weather getWeather(String data) throws JSONException {
         Weather weather = new Weather();
 
+        // Create JSONObject from data
         JSONObject jsonObject = new JSONObject(data);
 
+        // Extract info
         Location location = new Location();
 
         JSONObject coordObject = getObject("coord", jsonObject);
@@ -27,6 +29,7 @@ public class JSONParser {
         location.setCity(getString("name", jsonObject));
         weather.location = location;
 
+        // Get weather info (array)
         JSONArray jsonArray = jsonObject.getJSONArray("weather");
 
         JSONObject JSONWeather = jsonArray.getJSONObject(0);

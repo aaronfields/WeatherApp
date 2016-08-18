@@ -13,8 +13,10 @@ import java.net.URL;
 public class HTTPClient {
 
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
-    private static String APPID = "&APPID=40bcd0b964e14171b4f445863cd55472&units=imperial";
+    private static String APPID = ",USA&APPID=40bcd0b964e14171b4f445863cd55472&units=imperial";
 
+
+    // Query API with zip code
     public String getWeatherData(String zip) {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
@@ -26,6 +28,7 @@ public class HTTPClient {
             connection.setDoOutput(true);
             connection.connect();
 
+            // Read the response
             StringBuffer buffer = new StringBuffer();
             inputStream = connection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));

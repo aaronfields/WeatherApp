@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +81,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
             zip = (TextView) itemView.findViewById(R.id.zip);
 
         }
-
+        // OnClick to send to DetailActivity
         @Override
         public void onClick(View view) {
             Log.d("CONTEXT", "onClick: " + this.context);
@@ -94,14 +93,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
             this.context.startActivity(intent);
 
         }
-
+        // LongClick as a means to delete. Brings up an AlertDialog
         @Override
         public boolean onLongClick(View view) {
             int positionClicked = getAdapterPosition();
             Weather weather = weatherList.get(positionClicked);
             String zipText = zipList.get(positionClicked);
             showAlertDialog(positionClicked);
-            Toast.makeText(this.context, "Long Click!", Toast.LENGTH_SHORT).show();
 
             return false;
         }
