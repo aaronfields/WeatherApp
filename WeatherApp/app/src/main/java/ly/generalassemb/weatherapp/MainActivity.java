@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Add Zip Code");
+                builder.setMessage("Please enter a zip code");
                 input = new EditText(MainActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
                 builder.setView(input);

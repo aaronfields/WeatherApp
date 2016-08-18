@@ -13,7 +13,7 @@ import java.net.URL;
 public class HTTPClient {
 
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
-    private static String APPID = ",USA&APPID=40bcd0b964e14171b4f445863cd55472&units=imperial";
+    private static String APPID = "%2CUSA&APPID=40bcd0b964e14171b4f445863cd55472&units=imperial";
 
 
     // Query API with zip code
