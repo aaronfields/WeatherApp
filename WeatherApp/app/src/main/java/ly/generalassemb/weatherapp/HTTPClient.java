@@ -15,7 +15,7 @@ public class HTTPClient {
 
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
     private static String IMG_URL = "http://openweathermap.org/img/w/";
-    private static String APPID = "&APPID=40bcd0b964e14171b4f445863cd55472";
+    private static String APPID = "&APPID=40bcd0b964e14171b4f445863cd55472&units=imperial";
 
     public String getWeatherData(String zip) {
         HttpURLConnection connection = null;

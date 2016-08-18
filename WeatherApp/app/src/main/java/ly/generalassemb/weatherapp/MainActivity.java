@@ -2,7 +2,10 @@ package ly.generalassemb.weatherapp;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -32,16 +35,19 @@ public class MainActivity extends AppCompatActivity {
     private String[] starterCities;
     private List<String> zipList = new ArrayList<>();
     private Context context;
+    boolean isConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkConnection();
+
         starterCities = new String[3];
         starterCities[0] = "78704";
         starterCities[1] = "70611";
-        starterCities[2] = "02108";
+        starterCities[2] = "75204";
 
         //city = "78704";
 
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             zipList.add(city);
             JSONWeatherTask task = new JSONWeatherTask();
             task.execute(new String[]{city});
-            adapter = new WeatherAdapter(zipList, weatherList, context);
+            adapter = new WeatherAdapter(zipList, weatherList, MainActivity.this);
             mRecyclerView.setAdapter(adapter);
         }
 
@@ -66,17 +72,27 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle("Add Zip Code");
                 input = new EditText(MainActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                //Todo: make input only 5 characters
                 builder.setView(input);
 
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         zip = input.getText().toString();
-                        zipList.add(zip);
-                        //Todo: query database
-                        JSONWeatherTask task = new JSONWeatherTask();
-                        task.execute(new String[]{zip});
+                        if(zip.length() != 5){
+                            input.setError("Not a valid input");
+                        } else {
+                            zipList.add(zip);
+                            // Query database
+                            JSONWeatherTask task = new JSONWeatherTask();
+                            task.execute(new String[]{zip});
+//
+//                            int position = getAdapterPosition();
+//                            Weather weather = weatherList.get(position);
+//                            String zipText = zipList.get(position);
+                            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                            intent.putExtra("zip", zip);
+                            startActivity(intent);
+                        }
 
                     }
                 });
@@ -120,5 +136,19 @@ public class MainActivity extends AppCompatActivity {
 //                Bitmap img = BitmapFactory.decodeByteArray(weather.iconData, 0, weather.iconData.length);
 //            }
         }
+    }
+
+    public void checkConnection(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Log.d("SEARCH", "onCreate: You are connected");
+            isConnected = true;
+
+        } else {
+            Log.d("SEARCH", "onCreate: You are not connected");
+            isConnected = false;
+        }
+
     }
 }

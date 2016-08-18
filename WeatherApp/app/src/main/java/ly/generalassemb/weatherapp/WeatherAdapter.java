@@ -1,14 +1,18 @@
 package ly.generalassemb.weatherapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +38,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
 
     @Override
     public weatherViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View v = inflater.from(parent.getContext()).inflate(R.layout.weather_card_item, parent, false);
         weatherViewHolder holder = new weatherViewHolder(v, context, weatherList);
-        context = parent.getContext();
+
         return holder;
     }
 
@@ -72,6 +77,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
             this.context = context;
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             mImage = (ImageView) itemView.findViewById(R.id.image);
             city = (TextView) itemView.findViewById(R.id.city);
@@ -83,8 +89,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
 
         @Override
         public void onClick(View view) {
-
-
+            Log.d("CONTEXT", "onClick: " + this.context);
             int position = getAdapterPosition();
             Weather weather = weatherList.get(position);
             String zipText = zipList.get(position);
@@ -96,7 +101,40 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.weatherV
 
         @Override
         public boolean onLongClick(View view) {
+            int positionClicked = getAdapterPosition();
+            Weather weather = weatherList.get(positionClicked);
+            String zipText = zipList.get(positionClicked);
+            showAlertDialog(positionClicked);
+            Toast.makeText(this.context, "Long Click!", Toast.LENGTH_SHORT).show();
+
             return false;
+        }
+
+        private void showAlertDialog(Integer mPosition) {
+            final int position = mPosition;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+            builder.setTitle("Remove");
+            builder.setMessage("Are you sure you want to remove this location?");
+            builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+//                    Weather weather = weatherList.get(position);
+//                    String zipText = zipList.get(position);
+                    weatherList.remove(position);
+                    zipList.remove(position);
+                    WeatherAdapter.this.notifyDataSetChanged();
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            builder.show();
+
         }
     }
 
