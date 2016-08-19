@@ -1,0 +1,6 @@
+{
+  "name": "WeatherApp",
+  "tagline": "Weather app using the OpenWeatherMap API",
+  "body": "A simple weather app that prompts a user to input a zip code which is then used to query the API. ",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
