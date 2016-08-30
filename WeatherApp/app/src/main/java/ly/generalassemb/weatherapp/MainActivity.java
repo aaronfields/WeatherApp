@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         checkConnection();
 
         starterCities = new String[3];
-        starterCities[0] = "78704";
+        starterCities[0] = "12345";
         starterCities[1] = "70611";
         starterCities[2] = "10002";
 
